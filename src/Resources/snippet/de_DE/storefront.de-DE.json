@@ -1,0 +1,16 @@
+{
+    "detail": {
+        "grouped": {
+            "vpe": "VPE:"
+        }
+    },
+    "checkout": {
+        "no-line-items": "Sie benötigen mindestens ein Produkt mit einer Menge über Null."
+    },
+    "grouped": {
+        "price": {
+            "textFrom": "ab",
+            "textUntil": "bis"
+        }
+    }
+}

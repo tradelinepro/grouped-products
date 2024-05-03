@@ -1,0 +1,31 @@
+{
+  "name": "tradelinepro/grouped-products",
+  "description": "Grouped products",
+  "type": "shopware-platform-plugin",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "digital.manufaktur GmbH",
+      "email": "hallo@digitalmanufaktur.com",
+      "homepage": "https://digitalmanufaktur.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "tradelinepro/core": "~0.9.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Tradelinepro\\GroupedProducts\\": "src/"
+    }
+  },
+  "extra": {
+    "shopware-plugin-class": "Tradelinepro\\GroupedProducts\\TradelineproGroupedProducts",
+    "copyright": "digital.manufaktur GmbH",
+    "label": {
+      "de-DE": "Gruppenprodukte",
+      "en-GB": "Grouped products"
+    }
+  },
+  "version": "0.9.0"
+}

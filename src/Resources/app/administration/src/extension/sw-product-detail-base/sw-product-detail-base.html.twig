@@ -1,0 +1,11 @@
+{% block sw_product_detail_base_price_card %}
+<template v-if="!isLoading && !isGrouped">{% parent %}</template>
+{% endblock %}
+
+{% block sw_product_detail_deliverability_info_card %}
+<template v-if="!isLoading && !isGrouped">{% parent %}</template>
+{% endblock %}
+
+{% block sw_product_detail_base_settings_card %}
+<template v-if="!isLoading && !isGrouped">{% parent %}</template>
+{% endblock %}

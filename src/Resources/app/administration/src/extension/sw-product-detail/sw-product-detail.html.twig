@@ -1,0 +1,22 @@
+{% block sw_product_detail_content_tabs_general %}
+    {% parent %}
+
+    {% block sw_product_detail_content_tabs_grouped %}
+    <sw-tabs-item
+        v-if="!isLoading && isGrouped"
+        :route="{ name: 'sw.product.detail.grouped', params: { id: $route.params.id } }"
+        :title="$tc('grouped-products.groups')"
+    >
+
+        {{ $tc('grouped-products.groups') }}
+    </sw-tabs-item>
+    {% endblock %}
+{% endblock %}
+
+{% block sw_product_detail_content_tabs_advanced_prices %}
+<template v-if="!isLoading && !isGrouped">{% parent %}</template>
+{% endblock %}
+
+{% block sw_product_detail_content_tabs_advanced_variants %}
+<template v-if="!isLoading && !isGrouped">{% parent %}</template>
+{% endblock %}

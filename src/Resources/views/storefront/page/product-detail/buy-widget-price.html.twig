@@ -1,0 +1,38 @@
+{% sw_extends '@Storefront/storefront/page/product-detail/buy-widget-price.html.twig' %}
+
+{% block page_product_detail_price_inner %}
+    {% set product = page.product %}
+    {% set groupedPrice %}
+        {% if page.product.customFields.isGrouped %}
+            {% if page.product.extensions.groupedProduct and page.product.extensions.groupedProductGroupItems %}
+
+            {% block page_product_detail_price_grouped_product %}
+                {% set groupedProduct = page.product.extensions.groupedProduct %}
+
+                <div class="product-detail-price">
+                    {%- block page_product_detail_price_grouped_product_text -%}
+                        {{- "grouped.price.textFrom"|trans|sw_sanitize }} {{ groupedProduct.minimalPrice|currency -}}
+
+                        {%- if page.product.extensions.groupedProduct.maximalPrice -%}
+                            {{- ' ' }}{{ "grouped.price.textUntil"|trans|sw_sanitize }} {{ groupedProduct.maximalPrice|currency -}}
+                        {%- endif -%}
+
+                        {{- "general.star"|trans|sw_sanitize -}}
+                    {%- endblock -%}
+                </div>
+            {% endblock %}
+
+            {% endif %}
+        {% else %}
+            {{ parent() }}
+        {% endif %}
+    {% endset %}
+
+    {% if not context.extensions.privateShoppingConfig.hidePrices and not product.extensions.privateShoppingConfig.hidePrices %}
+        {{ groupedPrice }}
+    {% else %}
+        {% block component_product_box_price_info_restriction_permissions %}
+            {% sw_include '@Storefront/storefront/component/restricted/price-info.html.twig' ignore missing %}
+        {% endblock %}
+    {% endif %}
+{% endblock %}

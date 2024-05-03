@@ -1,0 +1,35 @@
+{% sw_extends '@Storefront/storefront/page/product-detail/buy-widget.html.twig' %}
+
+{% block page_product_detail_rich_snippets %}
+    {% if not page.product.customFields.isGrouped %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block page_product_detail_data_rich_snippet_price_range %}
+    {% if not page.product.customFields.isGrouped %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block page_product_detail_configurator_include %}
+    {% if not page.product.customFields.isGrouped %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block page_product_detail_delivery_informations %}
+    {% if not page.product.customFields.isGrouped %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block page_product_detail_tax %}
+    {% if not page.product.customFields.isGrouped %}
+        {{ parent() }}
+    {% else %}
+        {% if page.product.extensions.groupedProduct and page.product.extensions.groupedProductGroupItems %}
+            {{ parent() }}
+        {% endif %}
+    {% endif %}
+{% endblock %}

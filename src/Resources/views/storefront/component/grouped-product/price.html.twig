@@ -1,0 +1,15 @@
+{% block component_grouped_product_price %}
+    {% if product.customFields.isGrouped and product.extensions.groupedProduct.minimalPrice is not null %}
+        {% block component_grouped_product_price_unit %}
+            <p class="product-price-unit"></p>
+        {% endblock %}
+
+        {% block component_grouped_product_price_value %}
+            <span class="product-price product-advanced-list-price-wrapper product-price-grouped-minimal">
+                {%- block component_product_box_price_grouped_product_price_text -%}
+                    {{- "grouped.price.textFrom"|trans|sw_sanitize }} <b>{{ product.extensions.groupedProduct.minimalPrice|currency }}{{ "general.star"|trans|sw_sanitize }}</b>
+                {%- endblock -%}
+            </span>
+        {% endblock %}
+    {% endif %}
+{% endblock %}

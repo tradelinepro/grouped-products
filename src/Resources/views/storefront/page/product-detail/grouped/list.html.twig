@@ -1,0 +1,190 @@
+{%- block page_product_grouped_detail_list -%}
+    {%- if product.customFields.isGrouped and product.extensions.groupedProductGroupItems -%}
+        {%- block page_product_detail_groups -%}
+            {%- set separateAddToCart = context.extensions.groupedCartPosition.showSeparated -%}
+
+            <div class="col-12 detail-buy-grouped-products">
+                {%- for group in product.extensions.groupedProductGroupItems -%}
+                    {%- block page_product_grouped_detail_title -%}
+                        <h4 class="{% if not loop.first %}mt-3 {% endif %}detail-buy-grouped-products-title">
+                            {%- block page_product_grouped_detail_title_text -%}
+                                {{- group.productGroup.translated.name|sw_sanitize -}}
+                            {%- endblock -%}
+                        </h4>
+                    {%- endblock -%}
+
+                    {%- block page_product_grouped_detail_quantities_container -%}
+                        <div class="mt-3 detail-buy-grouped-products-list">
+                            {%- for groupProduct in group.products -%}
+                                {%- block page_product_grouped_detail_quantities_container_inner -%}
+                                    {%- set inStock = groupProduct.inStock -%}
+
+                                    <div class="detail-buy-grouped-products-item{% if not inStock %} inactive{% endif %}">
+                                        {%- block page_product_grouped_detail_row -%}
+                                            <div class="d-flex flex-row flex-wrap justify-content-between detail-buy-grouped-products-item-top">
+                                                {%- block page_product_grouped_detail_quantity_title -%}
+                                                    <div class="detail-buy-grouped-products-item-title">
+                                                        {%- block page_product_grouped_detail_quantity_title_children -%}
+                                                            {%- block page_product_grouped_detail_quantity_title_text -%}
+                                                                <span class="h6 d-block mb-1">{{ groupProduct.translated.name|sw_sanitize }}</span>
+
+                                                                <div class="mb-2 detail-buy-grouped-products-item-title-characteristics">
+                                                                    {% if groupProduct.productNumber %}
+                                                                        <div class="d-inline-block mr-3">
+                                                                            <span>{{ "detail.productNumberLabel"|trans|sw_sanitize }}</span> <u>{{ groupProduct.productNumber }}</u>
+                                                                        </div>
+                                                                    {% endif %}
+
+                                                                    {% if groupProduct.translated.packUnit %}
+                                                                        <div class="d-inline-block">
+                                                                            <span>{{ 'detail.grouped.vpe'|trans|sw_sanitize }}</span> <span>{{ groupProduct.translated.packUnit }}</span>
+                                                                        </div>
+                                                                    {% endif %}
+                                                                </div>
+                                                            {%- endblock -%}
+                                                        {%- endblock -%}
+                                                    </div>
+                                                {%- endblock -%}
+
+                                                {%- if inStock -%}
+                                                    {%- block page_product_grouped_detail_buy_button -%}
+                                                        {% set buyBtn %}
+                                                            {%- if separateAddToCart -%}
+                                                                <div class="detail-buy-grouped-products-item-buy">
+                                                                    {%- block page_product_grouped_detail_buy_button_in_stock -%}
+                                                                        <button type="submit"
+                                                                                form="productDetailPageBuyProductForm{{ groupProduct.id|raw }}"
+                                                                                class="btn btn-buy btn-sm"
+                                                                                title="{{ "detail.addProduct"|trans|striptags }}">
+
+                                                                            {%- block page_product_grouped_detail_buy_button_icon -%}
+                                                                                {%- sw_icon 'cart' -%}
+                                                                            {%- endblock -%}
+                                                                        </button>
+                                                                    {%- endblock -%}
+                                                                </div>
+                                                            {%- endif -%}
+                                                        {% endset %}
+
+                                                        {% if not context.extensions.privateShoppingConfig.hideAddToCartButton
+                                                            and not product.extensions.privateShoppingConfig.hideAddToCartButton %}
+                                                            {{ buyBtn }}
+                                                        {% endif %}
+                                                    {%- endblock -%}
+                                                {%- endif -%}
+                                            </div>
+
+                                            <div class="d-flex flex-row flex-wrap align-items-center justify-content-between detail-buy-grouped-products-item-info">
+                                                {% set itemInfo %}
+                                                    {% block page_product_grouped_detail_quantity_price %}
+                                                        <div class="d-flex flex-wrap align-items-center detail-buy-grouped-products-item-quantity-price">
+                                                            {%- block page_product_grouped_detail_quantity -%}
+                                                                <div class="detail-buy-grouped-products-item-quantity">
+                                                                    {%- block page_product_grouped_detail_quantity_in_stock -%}
+                                                                        {%- sw_include '@Storefront/storefront/page/product-detail/grouped/quantity.html.twig' with {
+                                                                            product: groupProduct,
+                                                                        } -%}
+                                                                    {%- endblock -%}
+                                                                </div>
+                                                            {%- endblock -%}
+
+                                                            {% block page_product_grouped_detail_quantity_x %}
+                                                                <span class="px-2">x</span>
+                                                            {% endblock %}
+
+                                                            {%- block page_product_grouped_detail_prices -%}
+                                                                <div class="detail-buy-grouped-products-item-price">
+                                                                    {%- block page_product_grouped_detail_prices_inner -%}
+                                                                        {%- if groupProduct.calculatedPrices.count > 0 -%}
+                                                                            {%- if groupProduct.calculatedPrices.count == 1 -%}
+                                                                                {{- groupProduct.calculatedPrices.first.unitPrice|currency ~ "general.star"|trans|sw_sanitize -}}
+                                                                            {%- else -%}
+                                                                                {%- for price in groupProduct.calculatedPrices -%}
+                                                                                    {%- if loop.last -%}
+                                                                                        {{- "grouped.price.textFrom"|trans|lower|sw_sanitize -}}
+                                                                                    {%- else -%}
+                                                                                        {{- "grouped.price.textUntil"|trans|lower|sw_sanitize -}}
+                                                                                    {%- endif -%}
+
+                                                                                    {{- ' ' ~ price.quantity|raw ~ ' ' -}}
+
+                                                                                    {%- block page_product_grouped_detail_price -%}
+                                                                                        {%- block page_product_grouped_detail_price_text -%}
+                                                                                            {{- price.unitPrice|currency ~ "general.star"|trans|sw_sanitize -}}
+                                                                                        {%- endblock -%}
+                                                                                    {%- endblock -%}
+
+                                                                                    {%- if not loop.last -%}
+                                                                                        <br>
+                                                                                    {%- endif -%}
+                                                                                {%- endfor -%}
+                                                                            {%- endif -%}
+                                                                        {%- else -%}
+                                                                            {%- block page_product_grouped_detail_price_simple -%}
+                                                                                {%- block page_product_grouped_detail_price_simple_text -%}
+                                                                                    {{- groupProduct.calculatedPrice.unitPrice|currency ~ "general.star"|trans|sw_sanitize -}}
+                                                                                {%- endblock -%}
+                                                                            {%- endblock -%}
+                                                                        {%- endif -%}
+                                                                    {%- endblock -%}
+                                                                </div>
+                                                            {%- endblock -%}
+                                                        </div>
+                                                    {% endblock %}
+
+                                                    {%- block page_product_grouped_detail_delivery_information_wrapper -%}
+                                                        <div class="detail-buy-grouped-products-item-delivery">
+                                                            {%- block page_product_grouped_detail_delivery_information_inner -%}
+                                                                {%- sw_include '@Storefront/storefront/page/product-detail/grouped/delivery-information.html.twig' with {
+                                                                    product: groupProduct,
+                                                                } -%}
+                                                            {%- endblock -%}
+                                                        </div>
+                                                    {%- endblock -%}
+                                                {% endset %}
+
+                                                {% if not context.extensions.privateShoppingConfig.hidePrices and not product.extensions.privateShoppingConfig.hidePrices %}
+                                                    {{ itemInfo }}
+                                                {% endif %}
+                                            </div>
+
+                                            {%- block page_product_grouped_detail_buy_info -%}
+                                                {%- if inStock and context.extensions.groupedCartPosition.showBottom -%}
+                                                    {%- block page_product_grouped_detail_buy_info_inner -%}
+                                                        <div class="d-none">
+                                                            {%- block page_product_grouped_detail_buy_info_in_stock -%}
+                                                                {%- block page_product_grouped_detail_buy_info_inputs -%}
+                                                                    {%- set inputs = {
+                                                                        id: groupProduct.id,
+                                                                        type: 'product',
+                                                                        referencedId: groupProduct.id,
+                                                                        stackable: '1',
+                                                                        removable: '1',
+                                                                        grouped: '1',
+                                                                    } -%}
+
+                                                                    {%- for key, value in inputs -%}
+                                                                        {%- block page_product_grouped_detail_buy_info_input -%}
+                                                                            <input type="hidden"
+                                                                                   name="lineItems[{{ inputs.id|raw }}][{{ key|raw }}]"
+                                                                                   value="{{ value|raw }}">
+                                                                        {%- endblock -%}
+                                                                    {%- endfor -%}
+                                                                {%- endblock -%}
+                                                            {%- endblock -%}
+                                                        </div>
+                                                    {%- endblock -%}
+                                                {%- endif -%}
+                                            {%- endblock -%}
+                                        {%- endblock -%}
+                                    </div>
+                                {%- endblock -%}
+                            {%- endfor -%}
+                        </div>
+                    {%- endblock -%}
+                {%- endfor -%}
+            </div>
+
+        {%- endblock -%}
+    {%- endif -%}
+{%- endblock -%}

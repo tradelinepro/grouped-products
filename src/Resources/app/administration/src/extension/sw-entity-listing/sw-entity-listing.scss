@@ -1,0 +1,11 @@
+.sw-data-grid__row {
+    &.is--grouped {
+        *[class*="sw-data-grid__cell--price-"],
+        .sw-data-grid__cell--stock,
+        .sw-data-grid__cell--availableStock {
+            .sw-data-grid__cell-content {
+                display: none;
+            }
+        }
+    }
+}

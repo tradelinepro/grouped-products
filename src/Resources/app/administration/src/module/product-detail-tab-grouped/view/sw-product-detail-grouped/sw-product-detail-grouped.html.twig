@@ -1,0 +1,81 @@
+{% block sw_product_detail_grouped %}
+<div class="sw-product-detail-grouped">
+
+    {% block sw_product_detail_grouped_items_wrapper %}
+    <template v-if="showGroupCard">
+
+        {% block sw_product_detail_grouped_items %}
+        <tradelinepro-product-grouped-form
+            v-for="item in product.extensions.groups"
+            :key="item.id"
+            :grouped="item"
+            :allow-edit="acl.can('product.editor')"
+        />
+        {% endblock %}
+
+        {% block sw_product_detail_grouped_add %}
+        <sw-button
+            class="sw-product-detail-grouped__add-btn"
+            variant="ghost"
+            @click="onAddGrouped"
+            :disabled="!acl.can('product.editor')"
+            v-tooltip="tooltipDefault"
+        >
+
+            {{ $tc('grouped-products.buttonAddGroup') }}
+        </sw-button>
+        {% endblock %}
+
+    </template>
+    {% endblock %}
+
+    {% block sw_product_detail_empty_state %}
+    <sw-card
+        v-else
+        position-identifier="sw-product-detail-empty-state"
+        class="sw-product-detail-grouped__empty-state"
+    >
+
+        <sw-loader v-if="isLoading"/>
+        <div v-else>
+            <template>
+
+                {% block sw_product_detail_empty_state_inner %}
+                <div class="sw-product-detail-grouped__empty-state-inner">
+
+                    {% block sw_product_detail_empty_state_inner %}
+                    <img :src="'/administration/static/img/empty-states/products-empty-state.svg' | asset">
+                    {% endblock %}
+
+                    {% block sw_product_detail_empty_state_description %}
+                    <div class="sw-product-detail-grouped__empty-state-inner--label">
+
+                        {% block sw_product_detail_empty_state_description_inner %}
+                        <p>{{ $tc('grouped-products.emptyStateDescription') }}</p>
+                        {% endblock %}
+
+                    </div>
+                    {% endblock %}
+
+                    {% block sw_product_detail_empty_state_grouped_add %}
+                    <sw-button
+                        variant="ghost"
+                        @click="onAddGrouped"
+                        :disabled="!acl.can('product.editor')"
+                        v-tooltip="tooltipDefault"
+                    >
+
+                        {{ $tc('grouped-products.buttonAddGroup') }}
+                    </sw-button>
+                    {% endblock %}
+
+                </div>
+                {% endblock %}
+
+            </template>
+        </div>
+    </sw-card>
+    {% endblock %}
+
+</div>
+{% endblock %}

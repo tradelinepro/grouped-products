@@ -1,0 +1,19 @@
+.detail-buy-grouped-products-item {
+    padding-bottom: $spacer;
+    margin-bottom: $spacer;
+    border-bottom: 1px solid $sw-border-color;
+
+    &.inactive {
+        opacity: .5;
+        pointer-events: none;
+    }
+}
+
+.detail-buy-grouped-products-item-title {
+    padding-right: $spacer-lg;
+}
+
+.detail-buy-grouped-products-item-title-characteristics,
+.detail-buy-grouped-products-item-delivery {
+    font-size: $font-size-sm;
+}

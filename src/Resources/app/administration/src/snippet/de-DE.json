@@ -1,0 +1,12 @@
+{
+    "grouped-products": {
+        "buttonAddGroup": "Neue Gruppe hinzufügen",
+        "deleteConfirmTitle": "Gruppe löschen",
+        "deleteConfirmText": "Möchtest Du die Gruppenkonfiguration wirklich löschen?",
+        "emptyStateDescription": "Für dieses Produkt existiert noch keine Gruppenkonfiguration",
+        "assignEmptyStateDescription": "Die Gruppe muss zunächst gespeichert werden, bevor Du Produkte hinzufügen kannst",
+        "grouped": "Gruppiert",
+        "groups": "Gruppen",
+        "buttonAddGroupedProduct": "Gruppiertes Produkt anlegen"
+    }
+}

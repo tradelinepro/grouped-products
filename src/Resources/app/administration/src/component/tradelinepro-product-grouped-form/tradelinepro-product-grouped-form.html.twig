@@ -1,0 +1,261 @@
+{% block tradelinepro_product_grouped_form %}
+<div class="product-detail-grouped-form">
+
+    {% block tradelinepro_product_grouped_form_card %}
+    <sw-card position-identifier="tradelinepro-product-grouped-form-card" :title="grouped.name">
+        <div
+            v-if="!isLoading && grouped"
+            class="product-detail-grouped-form__card-container"
+        >
+
+            {% block tradelinepro_product_grouped_form_context_menu %}
+            <div class="sw-product-detail-grouped__context-button">
+                <sw-context-button>
+
+                    {% block tradelinepro_product_grouped_form_context_button_delete %}
+                    <sw-context-menu-item
+                        variant="danger"
+                        class="sw-product-grouped-context-item__delete-action"
+                        @click="onShowDeleteModal"
+                        :disabled="!allowEdit"
+                    >
+
+                        {{ $tc('sw-product.crossselling.buttonDeleteCrossSelling') }}
+                    </sw-context-menu-item>
+                    {% endblock %}
+
+                </sw-context-button>
+            </div>
+            {% endblock %}
+
+            {% block tradelinepro_product_grouped_form_container_title_active %}
+            <sw-container
+                columns="2fr 1fr"
+                gap="0 30px"
+                align="start"
+            >
+
+                {% block tradelinepro_product_grouped_form_title_field %}
+                <sw-text-field
+                    :label="$tc('sw-product.crossselling.inputCrossSellingTitle')"
+                    required
+                    :placeholder="$tc('sw-product.crossselling.inputCrossSellingTitlePlaceholder')"
+                    v-model="grouped.name"
+                    :error="groupedNameError"
+                    :disabled="!allowEdit"
+                />
+                {% endblock %}
+
+                {% block tradelinepro_product_grouped_form_active_field %}
+                <sw-field
+                    type="switch"
+                    class="sw-product-detail-grouped__active-switch"
+                    :label="$tc('sw-product.crossselling.inputCrossSellingActive')"
+                    v-model="grouped.active"
+                    :disabled="!allowEdit"
+                />
+                {% endblock %}
+
+            </sw-container>
+            {% endblock %}
+
+            {% block tradelinepro_product_grouped_form_container_crossselling_type_position %}
+            <sw-container
+                columns="2fr 1fr"
+                gap="0 30px"
+            >
+
+                {% block tradelinepro_product_grouped_form_type %}
+                <sw-select-field
+                    :label="$tc('sw-product.crossselling.inputCrossSellingType')"
+                    @change="onTypeChanged"
+                    :error="groupedTypeError"
+                    v-model="grouped.type"
+                    :disabled="!allowEdit"
+                >
+
+                    <option
+                        v-for="option in groupedTypes"
+                        :key="option.value"
+                        :value="option.value"
+                    >
+
+                        {{ option.label }}
+                    </option>
+                </sw-select-field>
+                {% endblock %}
+
+                {% block tradelinepro_product_grouped_form_position_field %}
+                <sw-number-field
+                    number-type="int"
+                    :min="1"
+                    :label="$tc('sw-product.crossselling.inputCrossSellingPosition')"
+                    :error="groupedPositionError"
+                    :placeholder="$tc('sw-product.crossselling.inputCrossSellingPositionPlaceholder')"
+                    v-model="grouped.position"
+                    :disabled="!allowEdit"
+                />
+                {% endblock %}
+
+            </sw-container>
+            {% endblock %}
+
+            {% block tradelinepro_product_grouped_form_wrapper_crossselling_product_stream %}
+            <div v-if="!useManualAssignment">
+
+                {% block tradelinepro_product_grouped_form_product_stream_field %}
+                <sw-entity-single-select
+                    entity="product_stream"
+                    class="sw-select-grouped__select-product-stream"
+                    id="sw-field--grouped-product-group"
+                    :label="$tc('sw-product.crossselling.inputCrossSellingProductStream')"
+                    :placeholder="$tc('sw-product.crossselling.inputCrossSellingProductStreamPlaceholder')"
+                    v-model="grouped.productStreamId"
+                    :disabled="!allowEdit"
+                />
+                {% endblock %}
+
+                {% block tradelinepro_product_grouped_form_container_crossselling_sorting_limit %}
+                <sw-container
+                    columns="1fr 1fr"
+                    gap="0 30px"
+                >
+
+                    {% block tradelinepro_product_grouped_form_sort_field %}
+                    <sw-select-field
+                        :label="$tc('sw-product.crossselling.inputCrossSellingSorting')"
+                        :value="sortingConCat"
+                        @change="onSortingChanged"
+                        :disabled="!allowEdit"
+                    >
+
+                        <option
+                            v-for="option in sortingTypes"
+                            :key="option.value"
+                            :value="option.value"
+                        >
+
+                            {{ option.label }}
+                        </option>
+                    </sw-select-field>
+                    {% endblock %}
+
+                    {% block tradelinepro_product_grouped_form_limit_field %}
+                    <sw-number-field
+                        number-type="int"
+                        :label="$tc('sw-product.crossselling.inputCrossSellingLimit')"
+                        v-model="grouped.limit"
+                        :disabled="!allowEdit"
+                    />
+                    {% endblock %}
+
+                </sw-container>
+                {% endblock %}
+
+                {% block tradelinepro_product_grouped_form_preview_link %}
+                <sw-container
+                    columns="1fr"
+                    justify="end"
+                    class="sw-product-grouped-form__links"
+                >
+
+                    <a
+                        @click="openModalPreview"
+                        :class="{ 'is--disabled': previewDisabled }"
+                        class="sw-card__quick-link"
+                    >
+                        {{ $tc('sw-product.crossselling.linkOpenStreamPreview') }} <sw-icon
+                            name="regular-long-arrow-right"
+                            small
+                        />
+                    </a>
+                </sw-container>
+                {% endblock %}
+
+            </div>
+            {% endblock %}
+
+            {% block tradelinepro_product_detail_grouped_assignment %}
+            <tradelinepro-product-grouped-assignment
+                v-else
+                :assigned-products="grouped.assignedProducts"
+                :grouped-id="grouped.id"
+                :searchable-fields="['name', 'productNumber']"
+                :allow-edit="allowEdit"
+            />
+            {% endblock %}
+
+            {% block tradelinepro_product_detail_grouped_modal_preview_modal %}
+            <sw-product-stream-modal-preview
+                v-if="showModalPreview"
+                :filters="productStreamFilterTree"
+                ref="modalPreview"
+                @modal-close="closeModalPreview"
+            />
+            {% endblock %}
+
+        </div>
+    </sw-card>
+    {% endblock %}
+
+    {% block tradelinepro_product_detail_grouped_form_modal_delete %}
+    <sw-modal
+        v-if="showDeleteModal"
+        @modal-close="onCloseDeleteModal"
+        variant="small"
+        :title="$tc('grouped-products.deleteConfirmTitle')"
+        class="sw-product-detail-grouped__delete-modal"
+    >
+
+        {% block tradelinepro_product_detail_grouped_form_delete_text %}
+        <p>{{ $tc('grouped-products.deleteConfirmText') }}</p>
+        {% endblock %}
+
+        {% block tradelinepro_product_detail_grouped_form_modal_delete_footer %}
+        <template #modal-footer>
+
+            {% block tradelinepro_product_detail_grouped_modal_delete_action_cancel %}
+            <sw-button
+                @click="onCloseDeleteModal"
+                size="small"
+            >
+
+                {{ $tc('sw-product.crossselling.deleteButtonCancel') }}
+            </sw-button>
+            {% endblock %}
+
+            {% block tradelinepro_product_detail_grouped_form_modal_delete_action_delete %}
+            <sw-button
+                class="sw-product-detail-grouped__delete-button"
+                size="small"
+                variant="danger"
+                @click="onConfirmDelete"
+            >
+
+                {{ $tc('sw-product.crossselling.deleteButtonDelete') }}
+            </sw-button>
+            {% endblock %}
+
+        </template>
+        {% endblock %}
+
+    </sw-modal>
+    {% endblock %}
+
+    {% block tradelinepro_product_detail_grouped_form_condition_tree_invisibly %}
+    <sw-condition-tree
+        v-if="productStreamFilterRepository"
+        v-show="false"
+        association-field="productStreamId"
+        child-association-field="queries"
+        :initial-conditions="productStreamFilter"
+        :condition-repository="productStreamFilterRepository"
+        :condition-data-provider-service="productStreamConditionService"
+        :association-value="associationValue"
+        :root-condition="null"
+        @conditions-changed="updateProductStreamFilterTree"
+    />
+    {% endblock %}
+
+</div>
+{% endblock %}

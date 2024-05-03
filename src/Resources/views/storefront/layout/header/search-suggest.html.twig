@@ -1,0 +1,15 @@
+{% sw_extends '@Storefront/storefront/layout/header/search-suggest.html.twig' %}
+
+{% block layout_search_suggest_result_price %}
+    {% if product.extensions.groupedProduct %}
+        {% block layout_search_suggest_result_price_grouped_product %}
+            <div class="col-auto search-suggest-product-price search-suggest-product-price-grouped-minimal">
+                {%- block layout_search_suggest_result_price_grouped_product_text -%}
+                    {{- "grouped.price.textFrom"|trans|sw_sanitize }} {{ product.extensions.groupedProduct.minimalPrice|currency -}}
+                {%- endblock -%}
+            </div>
+        {% endblock %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,107 @@
+{% sw_extends '@Storefront/storefront/page/product-detail/buy-widget-form.html.twig' %}
+
+{% block page_product_detail_buy_container %}
+    {% if product.customFields.isGrouped and product.extensions.groupedProductGroupItems %}
+        {% set buyable = product.available %}
+
+        {{ parent() }}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block page_product_detail_buy_quantity_container %}
+    {% if product.customFields.isGrouped and product.extensions.groupedProductGroupItems %}
+        {% sw_include '@Storefront/storefront/page/product-detail/grouped/list.html.twig' %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block page_product_detail_buy_product_buy_info %}
+    {% if not product.customFields.isGrouped %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block page_product_detail_buy_redirect_input %}
+    {% if product.customFields.isGrouped %}
+        {% if product.extensions.groupedProduct.inStock %}
+            {{ parent() }}
+        {% endif %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block page_product_detail_product_buy_meta %}
+    {% if product.customFields.isGrouped %}
+        {% if product.extensions.groupedProduct.inStock %}
+            {{ parent() }}
+        {% endif %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block page_product_detail_buy_button_container %}
+    {% if product.customFields.isGrouped and product.extensions.groupedProductGroupItems %}
+        {% block page_product_detail_buy_button_container_grouped_product %}
+            {% if product.extensions.groupedProduct.inStock and context.extensions.groupedCartPosition.showBottom %}
+                {% block page_product_detail_buy_button_container_grouped_product_in_stock %}
+                    {% block page_product_detail_buy_button_container_grouped_product_in_stock_action %}
+                        <div class="col-12 mt-2">
+                            {% block page_product_detail_buy_button_container_grouped_product_in_stock_action_add_to_cart %}
+                                {{ block('page_product_detail_buy_button') }}
+                            {% endblock %}
+                        </div>
+                    {% endblock %}
+                {% endblock %}
+            {% endif %}
+        {% endblock %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block page_product_detail_buy_form_inner %}
+    {% if page.product.customFields.isGrouped and page.product.extensions.groupedProductGroupItems %}
+        {% set product = page.product %}
+        {% set buyable = product.available and product.childCount <= 0 and product.calculatedMaxPurchase > 0 %}
+        {% block page_product_detail_buy_form_grouped_product %}
+            {% if product.extensions.groupedProduct.inStock %}
+                {% block page_product_detail_buy_form_grouped_product_in_stock %}
+                    <form id="productDetailPageBuyProductForm"
+                        action="{{ block('page_product_detail_buy_form_action') }}"
+                        method="post"
+                        class="buy-widget"
+                        {% block page_product_detail_buy_form_grouped_product_in_stock_actions %}data-add-to-cart="true"{% endblock %}>
+                        {% block page_product_detail_buy_form_grouped_product_in_stock_inner %}
+                            {{ block('page_product_detail_buy_container') }}
+                        {% endblock %}
+
+                        {% block page_product_detail_buy_form_grouped_product_input_flag %}
+                            {% if context.extensions.groupedCartPosition.showBottom %}
+                                <input type="hidden" name="grouped" value="1">
+                            {% endif %}
+                        {% endblock %}
+                    </form>
+                {% endblock %}
+            {% else %}
+                {% block page_product_detail_buy_form_grouped_product_not_in_stock %}
+                    <div class="buy-widget">
+                        {{ block('page_product_detail_buy_container') }}
+                    </div>
+                {% endblock %}
+            {% endif %}
+        {% endblock %}
+
+        {% block page_product_detail_buy_form_grouped_product_forms_wrapper %}
+            {% if product.extensions.groupedProduct.inStock and context.extensions.groupedCartPosition.showSeparated %}
+                {% sw_include '@Storefront/storefront/page/product-detail/grouped/forms.html.twig' %}
+            {% endif %}
+        {% endblock %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}

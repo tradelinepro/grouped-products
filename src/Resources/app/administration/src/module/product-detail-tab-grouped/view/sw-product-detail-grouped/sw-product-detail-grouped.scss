@@ -1,0 +1,23 @@
+.sw-product-detail-grouped {
+    .sw-product-detail-grouped__add-btn {
+        display: block;
+        margin: 0 auto;
+    }
+}
+
+.sw-product-detail-grouped__empty-state {
+    .sw-product-detail-grouped__empty-state-inner {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 400px;
+
+        .sw-product-detail-grouped__empty-state-inner--label {
+            max-width: 240px;
+            margin-top: 25px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+    }
+}

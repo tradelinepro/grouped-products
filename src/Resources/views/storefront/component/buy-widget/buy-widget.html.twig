@@ -1,0 +1,25 @@
+{% sw_extends '@Storefront/storefront/component/buy-widget/buy-widget.html.twig' %}
+
+{% block buy_widget_rich_snippets %}
+    {% if not page.product.customFields.isGrouped %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block buy_widget_data_rich_snippet_price_range %}
+    {% if not page.product.customFields.isGrouped %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block buy_widget_configurator_include %}
+    {% if not page.product.customFields.isGrouped %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block buy_widget_delivery_informations %}
+    {% if not page.product.customFields.isGrouped %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}

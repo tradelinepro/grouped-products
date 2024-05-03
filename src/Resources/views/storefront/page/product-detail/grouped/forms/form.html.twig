@@ -1,0 +1,37 @@
+{%- block page_product_detail_grouped_form -%}
+    {%- if groupProduct.inStock -%}
+        {%- block page_product_detail_grouped_form_wrapper -%}
+            <form id="productDetailPageBuyProductForm{{ groupProduct.id|raw }}"
+                  action="{{ path('frontend.checkout.line-item.add') }}"
+                  method="post"
+                  {% block page_product_detail_grouped_form_actions %}data-add-to-cart="true"{% endblock %}>
+                {%- block page_product_detail_grouped_form_children -%}
+                    {%- block page_product_detail_grouped_form_redirect_input -%}
+                        <input type="hidden" name="redirectTo" value="frontend.cart.offcanvas">
+                    {%- endblock -%}
+
+                    {%- block page_product_detail_grouped_form_info_inputs -%}
+                        {%- set inputs = {
+                            id: groupProduct.id,
+                            type: 'product',
+                            referencedId: groupProduct.id,
+                            stackable: '1',
+                            removable: '1',
+                            grouped: '1',
+                        } -%}
+
+                        {%- for key, value in inputs -%}
+                            {%- block page_product_detail_grouped_form_info_input -%}
+                                <input type="hidden" name="lineItems[{{ inputs.id|raw }}][{{ key|raw }}]" value="{{ value|raw }}">
+                            {%- endblock -%}
+                        {%- endfor -%}
+                    {%- endblock -%}
+
+                    {%- block page_product_detail_grouped_form_input_flag -%}
+                        <input type="hidden" name="grouped" value="1">
+                    {%- endblock -%}
+                {%- endblock -%}
+            </form>
+        {%- endblock -%}
+    {%- endif -%}
+{%- endblock -%}

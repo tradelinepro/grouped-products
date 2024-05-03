@@ -1,0 +1,11 @@
+{%- block page_product_detail_grouped_forms -%}
+    <div class="d-none">
+        {%- block page_product_detail_grouped_forms_inner -%}
+            {%- for group in product.extensions.groupedProductGroupItems -%}
+                {%- for groupProduct in group.products -%}
+                    {%- sw_include '@Storefront/storefront/page/product-detail/grouped/forms/form.html.twig' -%}
+                {%- endfor -%}
+            {%- endfor -%}
+        {%- endblock -%}
+    </div>
+{%- endblock -%}

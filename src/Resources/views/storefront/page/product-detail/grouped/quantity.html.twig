@@ -1,0 +1,23 @@
+{%- block page_product_grouped_detail_quantity_select -%}
+    {%- set defaultQty = config('TradelineproGroupedProducts.config.defaultQty') * 1 -%}
+
+    {%- if defaultQty < 0 -%}
+        {%- set defaultQty = 0 -%}
+    {%- endif -%}
+
+    {%- set quantityRange = [0]|merge(range(product.minPurchase, product.calculatedMaxPurchase, product.purchaseSteps)|slice(0, 100)) -%}
+    {%- set quantityMax = max(quantityRange) -%}
+
+    {%- if defaultQty > quantityMax -%}
+        {%- set defaultQty = quantityMax -%}
+    {%- endif -%}
+
+    <input name="lineItems[{{ product.id|raw }}][quantity]"
+           class="form-control custom-quantity-select quantity-select-{{ product.id|raw }} js-offcanvas-cart-change-quantity"
+           type="number"
+           id="quantity"
+           value="{{ defaultQty }}"
+           min="{{ separateAddToCart and not context.extensions.groupedCartPosition.showBottom ? product.minPurchase : 0 }}"
+           max="{{ quantityMax }}"
+           step="{{ product.purchaseSteps }}"/>
+{%- endblock -%}

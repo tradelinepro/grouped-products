@@ -1,0 +1,25 @@
+{% sw_extends '@Storefront/storefront/component/buy-widget/buy-widget-price.html.twig' %}
+
+{% block buy_widget_price_inner %}
+    {% set groupedPrice %}
+        {% if page.product.customFields.isGrouped and page.product.extensions.groupedProduct %}
+            {% block buy_widget_price_grouped_product %}
+                <div class="product-detail-price">
+                    {%- block buy_widget_price_grouped_product_text -%}
+                        {{- "grouped.price.textFrom"|trans|sw_sanitize }} {{ page.product.extensions.groupedProduct.minimalPrice|currency }}{{ "general.star"|trans|sw_sanitize -}}
+                    {%- endblock -%}
+                </div>
+            {% endblock %}
+        {% else %}
+            {{ parent() }}
+        {% endif %}
+    {% endset %}
+
+    {% if not context.extensions.privateShoppingConfig.hidePrices and not product.extensions.privateShoppingConfig.hidePrices %}
+        {{ groupedPrice }}
+    {% else %}
+        {% block component_product_box_price_info_restriction_permissions %}
+            {% sw_include '@Storefront/storefront/component/restricted/price-info.html.twig' ignore missing %}
+        {% endblock %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!--
+/*
+ * @author digital.manufaktur GmbH
+ * @link   https://www.digitalmanufaktur.com/
+ */
+-->
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="Tradelinepro\GroupedProducts\Subscriber\ProductSearchCriteriaEventListener">
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="Tradelinepro\GroupedProducts\Subscriber\ProductSuggestCriteriaEventListener">
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="Tradelinepro\GroupedProducts\Subscriber\ProductLoadedEventListener">
+            <argument type="service" id="Tradelinepro\GroupedProducts\GroupedProducts\GroupedProductRoute"/>
+
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="Tradelinepro\GroupedProducts\Subscriber\ProductWrittenListener">
+            <argument type="service" id="product.repository"/>
+            <argument type="service" id="sales_channel.repository"/>
+            <argument type="service" id="Tradelinepro\GroupedProducts\Service\FromPriceCalculator"/>
+            <argument type="service" id="Shopware\Core\System\SalesChannel\Context\SalesChannelContextFactory"/>
+            <argument type="service" id="tradelinepro_product_grouped.plugin.logger"/>
+            <argument type="service" id="Shopware\Core\Framework\Adapter\Cache\CacheInvalidator"/>
+
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="Tradelinepro\GroupedProducts\Subscriber\ControllerArgumentsSubscriber">
+            <argument type="service" id="tradelinepro.grouped-products.config"/>
+            <argument type="service" id="serializer"/>
+
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="Tradelinepro\GroupedProducts\Subscriber\SalesChannelEventListener">
+            <argument type="service" id="tradelinepro.grouped-products.config"/>
+
+            <tag name="kernel.event_subscriber"/>
+        </service>
+    </services>
+</container>

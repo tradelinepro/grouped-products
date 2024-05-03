@@ -1,0 +1,15 @@
+{% sw_extends '@Storefront/storefront/component/product/card/price-unit.html.twig' %}
+
+{% block component_product_box_price_unit %}
+    {% if not product.extensions.groupedProduct %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block component_product_box_price %}
+    {% if product.customFields.isGrouped %}
+        {% sw_include '@Storefront/storefront/component/grouped-product/price.html.twig' %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
