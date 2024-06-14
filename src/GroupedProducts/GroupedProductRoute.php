@@ -18,6 +18,8 @@ use Shopware\Core\Content\ProductStream\Service\ProductStreamBuilderInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\MultiFilter;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\NotFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Sorting\FieldSorting;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\Framework\Plugin\Exception\DecorationPatternException;
@@ -26,7 +28,7 @@ use Shopware\Core\System\SalesChannel\Entity\SalesChannelRepository;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Tradelinepro\GroupedProducts\DataAbstractionLayer\Entity\ProductGrouped\ProductGroupedCollection;
 use Tradelinepro\GroupedProducts\DataAbstractionLayer\Entity\ProductGrouped\ProductGroupedDefinition;
@@ -164,17 +166,31 @@ class GroupedProductRoute extends AbstractGroupedProductRoute
 
         $ids = \array_values($productGroup->getAssignedProducts()->getProductIds());
 
-        $filter = new ProductAvailableFilter(
-            $context->getSalesChannel()->getId(),
-            ProductVisibilityDefinition::VISIBILITY_LINK
-        );
-
         if (!\count($ids)) {
             return $element;
         }
 
         $criteria->setIds($ids);
-        $criteria->addFilter($filter);
+        $criteria
+            ->addFilter(new ProductAvailableFilter(
+                $context->getSalesChannel()->getId(),
+                ProductVisibilityDefinition::VISIBILITY_LINK
+            ))
+            ->addFilter(new NotFilter(
+                NotFilter::CONNECTION_OR,
+                [
+                    new EqualsFilter('customFields.isGrouped', true),
+                    new EqualsFilter('customFields.isMachine', true),
+                ]
+            ))
+            ->addFilter(new MultiFilter(
+                MultiFilter::CONNECTION_OR,
+                [
+                    new EqualsFilter('childCount', 0),
+                    new EqualsFilter('childCount', null)
+                ]
+            ));
+
         $criteria->addAssociation('options.group');
 
         $criteria = $this->handleAvailableStock($criteria, $context);

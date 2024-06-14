@@ -4,11 +4,13 @@ import './tradelinepro-product-grouped-assignment.scss';
 const { mapGetters } = Shopware.Component.getComponentHelper();
 const { Component, Context } = Shopware;
 const { Criteria } = Shopware.Data;
+const {version} = "vue";
+
 
 Component.register('tradelinepro-product-grouped-assignment', {
     template,
 
-    inject: ['repositoryFactory'],
+    inject: ['repositoryFactory', 'feature'],
 
     props: {
         assignedProducts: {
@@ -132,7 +134,7 @@ Component.register('tradelinepro-product-grouped-assignment', {
 
         assetFilter() {
             return Shopware.Filter.getByName('asset');
-        },
+        }
     },
 
     methods: {

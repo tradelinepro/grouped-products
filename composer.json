@@ -7,7 +7,7 @@
     {
       "name": "digital.manufaktur GmbH",
       "email": "hallo@digitalmanufaktur.com",
-      "homepage": "https://digitalmanufaktur.com",
+      "homepage": "https://www.digitalmanufaktur.com/",
       "role": "Developer"
     }
   ],
@@ -27,5 +27,5 @@
       "en-GB": "Grouped products"
     }
   },
-  "version": "0.9.0"
+  "version": "0.9.1"
 }

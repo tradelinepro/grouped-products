@@ -73,7 +73,7 @@
             {% if product.extensions.groupedProduct.inStock %}
                 {% block buy_widget_buy_form_grouped_product_in_stock %}
                     <form id="productDetailPageBuyProductForm"
-                        action="{{ block('buy_widget_buy_form_action') }}"
+                        action="{{ formAction }}"
                         method="post"
                         class="buy-widget"
                         data-add-to-cart="true">

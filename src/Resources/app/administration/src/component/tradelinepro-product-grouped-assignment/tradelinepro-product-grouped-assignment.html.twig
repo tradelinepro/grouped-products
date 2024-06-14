@@ -11,10 +11,10 @@
             disable-auto-close
             :disabled="!allowEdit"
             show-clearable-button
-            {% if VUE3 %}
-            @update:value="onToggleProduct"
-            {% else %}
+            {% if VUE2 %}
             @change="onToggleProduct"
+            {% else %}
+            @update:value="onToggleProduct"
             {% endif %}
         >
 
@@ -78,7 +78,11 @@
         <template #column-position="{ item }">
             <sw-data-grid-column-position
                 ref="columnPosition"
-                v-model="assignedProducts"
+                {% if VUE2 %}
+                    v-model="assignedProducts"
+                {% else %}
+                    v-model:value="assignedProducts"
+                {% endif %}
                 :show-value="true"
                 :item="item"
             />

@@ -8,7 +8,7 @@ const { mapState, mapGetters } = Shopware.Component.getComponentHelper();
 Component.register('sw-product-detail-grouped', {
     template,
 
-    inject: ['repositoryFactory', 'acl'],
+    inject: ['repositoryFactory', 'acl', 'feature'],
 
     props: {
         allowEdit: {
@@ -33,6 +33,10 @@ Component.register('sw-product-detail-grouped', {
             'isLoading',
         ]),
 
+        ...mapGetters('context', [
+            'isSystemDefaultLanguage',
+        ]),
+
         showGroupCard() {
             return !this.isLoading && this.product.extensions.groups && this.product.extensions.groups.length > 0;
         },
@@ -44,6 +48,17 @@ Component.register('sw-product-detail-grouped', {
                 showOnDisabledElements: true,
             };
         },
+
+        assetFilter() {
+            return Shopware.Filter.getByName('asset');
+        },
+
+        groupedRepository() {
+            return this.repositoryFactory.create(
+                this.product.extensions.groups.entity,
+                this.product.extensions.groups.source
+            );
+        }
     },
 
     watch: {
@@ -78,12 +93,7 @@ Component.register('sw-product-detail-grouped', {
         },
 
         onAddGrouped() {
-            const groupedRepository = this.repositoryFactory.create(
-                this.product.extensions.groups.entity,
-                this.product.extensions.groups.source
-            );
-
-            this.grouped = groupedRepository.create(Shopware.Context.api);
+            this.grouped = this.groupedRepository.create(Shopware.Context.api);
 
             this.grouped.productId = this.product.id;
             this.grouped.position = this.product.extensions.groups.length + 1;
