@@ -131,7 +131,7 @@ Component.register('tradelinepro-product-grouped-form', {
 
         associationValue() {
             return Utils.get(this.grouped, 'productStreamId') || '';
-        },
+        }
     },
 
     watch: {
@@ -173,7 +173,12 @@ Component.register('tradelinepro-product-grouped-form', {
         onConfirmDelete() {
             this.onCloseDeleteModal();
             this.$nextTick(() => {
-                this.product.extensions.groups.remove(this.grouped.id);
+                if(this.product.extensions.groups) {
+                    this.product.extensions.groups.remove(this.grouped.id);
+                }
+                if(this.product.groups) {
+                    this.product.groups.remove(this.grouped.id);
+                }
             });
         },
 

@@ -39,7 +39,7 @@ Component.override('sw-product-detail', {
     watch: {
         product() {
             if (!this.productId) {
-                this.isGrouped = !!this.$route.params.isGrouped;
+                this.isGrouped = !!this.$route.query.isGrouped;
             }
 
             if (!this.product) {

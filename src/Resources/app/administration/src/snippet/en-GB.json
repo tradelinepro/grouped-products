@@ -3,6 +3,7 @@
         "buttonAddGroup": "Add new group",
         "deleteConfirmTitle": "Delete group",
         "deleteConfirmText": "Are you sure you want to delete the group?",
+        "cardTitleGroupedProducts": "Grouped product",
         "emptyStateDescription": "There is no groups configured for this product, yet",
         "assignEmptyStateDescription": "Save the group in order to add products into it",
         "grouped": "Grouped",

@@ -2,8 +2,6 @@
 
 ## Description
 
-Grouped products is based on Shopware ~6.5.0.
-
 The Grouped products plugin allows you to display related products in groups on the frontend, simplifying the shopping process for your customers. An example application is order sets, where it makes sense to display all related products on one page, so that the customer can quickly and easily select the desired products and add them to the shopping basket. This feature is particularly useful when you want to link products that are not related through variants or similar constructs.
 
 ## Plugin Configuration
@@ -41,9 +39,9 @@ bin/console plugin:install --activate TradelineproGroupedProduct
 
 ## Compatibility
 
-| Plugin version | Shopware version | PHP version | 
-|----------------|------------------|-------------|
-| `0.9.*`        | ~6.5.0           | 8.2         |
+| Plugin version | Shopware version   | PHP version | 
+|----------------|--------------------|-------------|
+| `0.9.*`        | >=6.5.0 && < 6.7.0 | 8.2         |
 
 ### Licence
 The MIT License (MIT). Please see [License File](LICENSE) for more information.

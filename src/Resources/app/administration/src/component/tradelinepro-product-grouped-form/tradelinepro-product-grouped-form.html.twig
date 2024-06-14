@@ -40,18 +40,25 @@
                     :label="$tc('sw-product.crossselling.inputCrossSellingTitle')"
                     required
                     :placeholder="$tc('sw-product.crossselling.inputCrossSellingTitlePlaceholder')"
-                    v-model="grouped.name"
+                    {% if VUE2 %}
+                        v-model="grouped.name"
+                    {% else %}
+                        v-model:value="grouped.name"
+                    {% endif %}
                     :error="groupedNameError"
                     :disabled="!allowEdit"
                 />
                 {% endblock %}
 
                 {% block tradelinepro_product_grouped_form_active_field %}
-                <sw-field
-                    type="switch"
+                <sw-switch-field
                     class="sw-product-detail-grouped__active-switch"
                     :label="$tc('sw-product.crossselling.inputCrossSellingActive')"
-                    v-model="grouped.active"
+                    {% if VUE2 %}
+                        v-model="grouped.active"
+                    {% else %}
+                        v-model:value="grouped.active"
+                    {% endif %}
                     :disabled="!allowEdit"
                 />
                 {% endblock %}
@@ -68,9 +75,15 @@
                 {% block tradelinepro_product_grouped_form_type %}
                 <sw-select-field
                     :label="$tc('sw-product.crossselling.inputCrossSellingType')"
-                    @change="onTypeChanged"
+
                     :error="groupedTypeError"
-                    v-model="grouped.type"
+                    {% if VUE2 %}
+                        @change="onTypeChanged"
+                        v-model="grouped.type"
+                    {% else %}
+                        @update:value="onTypeChanged"
+                        v-model:value="grouped.type"
+                    {% endif %}
                     :disabled="!allowEdit"
                 >
 
@@ -92,7 +105,11 @@
                     :label="$tc('sw-product.crossselling.inputCrossSellingPosition')"
                     :error="groupedPositionError"
                     :placeholder="$tc('sw-product.crossselling.inputCrossSellingPositionPlaceholder')"
-                    v-model="grouped.position"
+                    {% if VUE2 %}
+                        v-model="grouped.position"
+                    {% else %}
+                        v-model:value="grouped.position"
+                    {% endif %}
                     :disabled="!allowEdit"
                 />
                 {% endblock %}
@@ -110,7 +127,11 @@
                     id="sw-field--grouped-product-group"
                     :label="$tc('sw-product.crossselling.inputCrossSellingProductStream')"
                     :placeholder="$tc('sw-product.crossselling.inputCrossSellingProductStreamPlaceholder')"
-                    v-model="grouped.productStreamId"
+                    {% if VUE2 %}
+                        v-model="grouped.productStreamId"
+                    {% else %}
+                        v-model:value="grouped.productStreamId"
+                    {% endif %}
                     :disabled="!allowEdit"
                 />
                 {% endblock %}
@@ -125,7 +146,11 @@
                     <sw-select-field
                         :label="$tc('sw-product.crossselling.inputCrossSellingSorting')"
                         :value="sortingConCat"
-                        @change="onSortingChanged"
+                        {% if VUE2 %}
+                            @change="onSortingChanged"
+                        {% else %}
+                            @update:value="onSortingChanged"
+                        {% endif %}
                         :disabled="!allowEdit"
                     >
 
@@ -144,7 +169,11 @@
                     <sw-number-field
                         number-type="int"
                         :label="$tc('sw-product.crossselling.inputCrossSellingLimit')"
-                        v-model="grouped.limit"
+                        {% if VUE2 %}
+                            v-model="grouped.limit"
+                        {% else %}
+                            v-model:value="grouped.limit"
+                        {% endif %}
                         :disabled="!allowEdit"
                     />
                     {% endblock %}

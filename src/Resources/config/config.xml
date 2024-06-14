@@ -17,29 +17,5 @@
             <label>Default quantity</label>
             <label lang="de-DE">Standardmenge</label>
         </input-field>
-
-        <input-field type="single-select">
-            <name>cartPosition</name>
-            <label>Cart position</label>
-            <label lang="de-DE">Warenkorb-Position</label>
-            <defaultValue>bottom</defaultValue>
-            <options>
-                <option>
-                    <id>bottom</id>
-                    <name>bottom</name>
-                    <name lang="de-DE">nur unten</name>
-                </option>
-                <option>
-                    <id>separate</id>
-                    <name>for each product separately</name>
-                    <name lang="de-DE">für jedes Produkt separat anzeigen</name>
-                </option>
-                <option>
-                    <id>both</id>
-                    <name>both (bottom and for each product separately)</name>
-                    <name lang="de-DE">beides (unten und für jedes Produkt separat anzeigen)</name>
-                </option>
-            </options>
-        </input-field>
     </card>
 </config>

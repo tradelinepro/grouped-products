@@ -1,5 +1,12 @@
 {% block sw_product_detail_grouped %}
-<div class="sw-product-detail-grouped">
+
+<div v-if="isLoading">
+    <sw-skeleton />
+    <sw-skeleton />
+</div>
+
+<div v-else
+     class="sw-product-detail-grouped">
 
     {% block sw_product_detail_grouped_items_wrapper %}
     <template v-if="showGroupCard">
@@ -29,51 +36,39 @@
     </template>
     {% endblock %}
 
+    <!-- eslint-disable-next-line sw-deprecation-rules/no-twigjs-blocks -->
     {% block sw_product_detail_empty_state %}
     <sw-card
         v-else
         position-identifier="sw-product-detail-empty-state"
-        class="sw-product-detail-grouped__empty-state"
     >
+        <sw-empty-state
+            :title="$tc('grouped-products.cardTitleGroupedProducts')"
+            :subline="$tc('grouped-products.emptyStateDescription')"
+            :absolute="false"
+            empty-module
+        >
+            <template #icon>
+                <img
+                    :src="assetFilter('/administration/static/img/empty-states/products-empty-state.svg')"
+                    :alt="$tc('grouped-products.cardTitleGroupedProducts')"
+                >
+            </template>
 
-        <sw-loader v-if="isLoading"/>
-        <div v-else>
-            <template>
-
-                {% block sw_product_detail_empty_state_inner %}
-                <div class="sw-product-detail-grouped__empty-state-inner">
-
-                    {% block sw_product_detail_empty_state_inner %}
-                    <img :src="'/administration/static/img/empty-states/products-empty-state.svg' | asset">
-                    {% endblock %}
-
-                    {% block sw_product_detail_empty_state_description %}
-                    <div class="sw-product-detail-grouped__empty-state-inner--label">
-
-                        {% block sw_product_detail_empty_state_description_inner %}
-                        <p>{{ $tc('grouped-products.emptyStateDescription') }}</p>
-                        {% endblock %}
-
-                    </div>
-                    {% endblock %}
-
-                    {% block sw_product_detail_empty_state_grouped_add %}
+            <!-- eslint-disable-next-line sw-deprecation-rules/no-twigjs-blocks -->
+            {% block sw_product_detail_empty_state_grouped_add %}
+                <template #actions>
                     <sw-button
-                        variant="ghost"
-                        @click="onAddGrouped"
-                        :disabled="!acl.can('product.editor')"
                         v-tooltip="tooltipDefault"
+                        variant="ghost"
+                        :disabled="!acl.can('product.editor') || !isSystemDefaultLanguage"
+                        @click="onAddGrouped"
                     >
-
                         {{ $tc('grouped-products.buttonAddGroup') }}
                     </sw-button>
-                    {% endblock %}
-
-                </div>
-                {% endblock %}
-
-            </template>
-        </div>
+                </template>
+            {% endblock %}
+        </sw-empty-state>
     </sw-card>
     {% endblock %}
 
